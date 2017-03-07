@@ -92,13 +92,15 @@ describe('basic-querying-no-timeout', function () {
             }
         });
 
+		setTimeout(function () {
+			// no big reason to delay this ...
+			// just want to give the feel that getSchema and automigrate are sequential actions
+			db.automigrate(done);
+		}, 2000);
+
 
         //TODO: add tests for a model where type doesn't match its name
         // Added few test for model Post with type name as PostCollection in `save` block test cases.
-
-        // no big reason to delay this ...
-        // just want to give the feel that getSchema and automigrate are sequential actions
-        db.automigrate(done);
 
     });
 

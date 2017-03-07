@@ -1,3 +1,7 @@
+### v1.3.5 - March 7, 2017
+- Fixed Issue - Remove refresh option for unsupported methods
+  - This issue was fixed in PR #86
+  
 ### v1.3.4 - Feb 25, 2017
 - Fixed Issue #79  - Wait until the document is ready for searching
   - this issue was fixed in PR #81
