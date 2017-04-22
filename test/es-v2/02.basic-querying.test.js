@@ -219,7 +219,6 @@ describe('basic-querying', function () {
 				}
 			}, function (err/*, u*/) {
 				//should.exist(u);
-				logger(arguments);
 				should.not.exist(err);
 				done();
 			});
