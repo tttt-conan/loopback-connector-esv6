@@ -320,43 +320,43 @@ To know more about `refresh` go through this [article](https://www.elastic.co/gu
 
 1. You can edit `test/resource/datasource-test.json` to point at your ES instance and then run `npm test`
 1. If you don't have an ES instance and want to leverage docker based ES instances then:
-  1. Start respective elasticsearch version and test one-by-one:
-    1. `docker-compose -f docker-compose-for-testing-v1.yml up`
-      1. Edit the code to pick which datasource you want to test against in `test/init.js`:
-
-      ```
-      var settings = require('./resource/datasource-test-v1-plain.json');
-      ```
-      1. Then run `npm test`
-        1. If you run into problems and you need more info about what failed, where and why:
-          1. Turn on trace level logging for ES, change from `"log": "error"` to  "log": "trace"` in `datasource-test-v1-plain.json`
-          1. Run with additional connector specific logs `DEBUG=loopback:connector:elasticsearch npm test`
-          1. [Troubleshoot with node-inspector](http://blog.andrewray.me/how-to-debug-mocha-tests-with-chrome/) if the level of details is still not enough `npm run test -- --debug-brk`
-      2. When you're finished and want to tear down the docker instances, run: `docker-compose -f docker-compose-for-testing-v1.yml down`
-    2. `docker-compose -f docker-compose-for-testing-v2.yml up`
-      1. Edit the code to pick which datasource you want to test against in `test/init.js`:
-
-      ```
-      var settings = require('./resource/datasource-test-v2-plain.json');
-      ```
-      1. Then run `npm test`
-        1. If you run into problems and you need more info about what failed, where and why:
-          1. Turn on trace level logging for ES, change from `"log": "error"` to  "log": "trace"` in `datasource-test-v2-plain.json`
-          1. Run with additional connector specific logs `DEBUG=loopback:connector:elasticsearch npm test`
-          1. [Troubleshoot with node-inspector](http://blog.andrewray.me/how-to-debug-mocha-tests-with-chrome/) if the level of details is still not enough `npm run test -- --debug-brk`
-      2. When you're finished and want to tear down the docker instances, run: `docker-compose -f docker-compose-for-testing-v2.yml down`
-    3. `docker-compose -f docker-compose-for-testing-v5.yml up`
-      1. Edit the code to pick which datasource you want to test against in `test/init.js`:
-
-      ```
-      var settings = require('./resource/datasource-test-v5-plain.json');
-      ```
-      1. Then run `npm test`
-        1. If you run into problems and you need more info about what failed, where and why:
-          1. Turn on trace level logging for ES, change from `"log": "error"` to  "log": "trace"` in `datasource-test-v5-plain.json`
-          1. Run with additional connector specific logs `DEBUG=loopback:connector:elasticsearch npm test`
-          1. [Troubleshoot with node-inspector](http://blog.andrewray.me/how-to-debug-mocha-tests-with-chrome/) if the level of details is still not enough `npm run test -- --debug-brk`
-      2. When you're finished and want to tear down the docker instances, run: `docker-compose -f docker-compose-for-testing-v5.yml down`
+    1. If you want to run all tests across all versions in one go, then:
+        1. Run `docker-compose -f docker-compose-for-testing-all.yml up`
+        1. Then run `npm test`
+    1. You can test a specific version of elasticsearch if you want
+        1. elasticsearch version 1.x
+            1. Run `docker-compose -f docker-compose-for-testing-v1.yml up`
+            1. Then run `npm run testv1`
+                1. To run tests with additional logging, use:
+                    1. `DEBUG=test:es-v1:* npm run testv1`
+                    1. `DEBUG=test:es-v1:*,loopback:connector:elasticsearch npm run testv1`
+                1. [Troubleshoot test with node-inspector](http://blog.andrewray.me/how-to-debug-mocha-tests-with-chrome/) if the level of details is still not enough:
+                    1. `npm run testv1 -- --debug-brk`
+                    1. `DEBUG=test:es-v1:* npm run testv1 -- --debug-brk`
+                    1. `DEBUG=test:es-v1:*,loopback:connector:elasticsearch npm run testv1 -- --debug-brk`
+            1. When you're finished and want to tear down the docker instances, run: `docker-compose -f docker-compose-for-testing-v1.yml down`
+        1. elasticsearch version 2.x
+            1. Run `docker-compose -f docker-compose-for-testing-v2.yml up`
+            1. Then run `npm run testv2`
+                1. To run tests with additional logging, use:
+                    1. `DEBUG=test:es-v2:* npm run testv2`
+                    1. `DEBUG=test:es-v2:*,loopback:connector:elasticsearch npm run testv2`
+                1. [Troubleshoot test with node-inspector](http://blog.andrewray.me/how-to-debug-mocha-tests-with-chrome/) if the level of details is still not enough:
+                    1. `npm run testv2 -- --debug-brk`
+                    1. `DEBUG=test:es-v2:* npm run testv2 -- --debug-brk`
+                    1. `DEBUG=test:es-v2:*,loopback:connector:elasticsearch npm run testv2 -- --debug-brk`
+            1. When you're finished and want to tear down the docker instances, run: `docker-compose -f docker-compose-for-testing-v2.yml down`
+        1. elasticsearch version 5.x
+            1. Run `docker-compose -f docker-compose-for-testing-v5.yml up`
+            1. Then run `npm run testv5`
+                1. To run tests with additional logging, use:
+                    1. `DEBUG=test:es-v5:* npm run testv5`
+                    1. `DEBUG=test:es-v5:*,loopback:connector:elasticsearch npm run testv5`
+                1. [Troubleshoot test with node-inspector](http://blog.andrewray.me/how-to-debug-mocha-tests-with-chrome/) if the level of details is still not enough:
+                    1. `npm run testv5 -- --debug-brk`
+                    1. `DEBUG=test:es-v5:* npm run testv5 -- --debug-brk`
+                    1. `DEBUG=test:es-v5:*,loopback:connector:elasticsearch npm run testv5 -- --debug-brk`
+            1. When you're finished and want to tear down the docker instances, run: `docker-compose -f docker-compose-for-testing-v5.yml down`
 
 ## Contributing
 
