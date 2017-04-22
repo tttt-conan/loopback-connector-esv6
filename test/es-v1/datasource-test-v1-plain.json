@@ -10,7 +10,11 @@
         }
     ],
     "apiVersion": "1.7",
-    "log": "trace",
+    "log": {
+        "type": "file",
+        "level": "trace",
+        "path": "elasticsearch-v1.log"
+    },
     "defaultSize": 50,
     "requestTimeout": 30000,
     "mappings": [
