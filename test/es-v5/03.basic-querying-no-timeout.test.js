@@ -463,10 +463,78 @@ describe('basic-querying-no-timeout', function () {
       });
     });
 
-    // TODO: why are these tests missing?
-    // it('should support "and" with "inq" operator that is satisfied', function (done) {
-    // it('should support "or" with nested "and" using "inq" operator that is satisfied', function (done) {
-    // it('should support "or" with nested "and" using "inq" operator that is satisfied with native query', function (done) {
+    it('should support "and" with "inq" operator that is satisfied', function (done) {
+      User.find({
+        where: {
+          and: [
+            {seq: {inq:[] }},
+            {vip: true}
+          ]
+        }
+      }, function (err, users) {
+        should.not.exist(err);
+        users.should.have.property('length', 0);
+        done();
+      });
+    });
+
+    it('should support "or" with nested "and" using "inq" operator that is satisfied', function (done) {
+        User.find({
+          where: {
+            or: [
+              { and: [{seq: {inq:[3,4,5] }}, { vip: true }] },
+              { role: 'lead' }
+            ]
+          }
+        }, function (err, users) {
+          should.not.exist(err);
+          should.exist(users);
+          users.should.have.property('length', 3);
+          done();
+        });
+    });
+
+    /**
+     * Testing if es can support nested queries which the loopback ORM can.
+     * where: {or: [{ and: [{seq: {inq:[3,4,5] }}, { vip: true }] },{ role: 'lead' }]}
+     */
+    it('should support "or" with nested "and" using "inq" operator that is satisfied with native query', function (done) {
+      User.find({
+        native: {
+          'query': {
+            'bool': {
+              'should': [
+                {
+                  'bool': {
+                    'must': [
+                      {
+                        'terms': {
+                          '_id': [
+                            3,
+                            4,
+                            5
+                          ]
+                        }
+                      },
+                      {
+                        'match': {
+                          'vip': true
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }, function (err, users) {
+        should.not.exist(err);
+        should.exist(users);
+        users.should.have.property('length', 1);
+        done();
+      });
+    });
 
     it('should support "and" operator that is not satisfied', function (done) {
       User.find({
@@ -753,7 +821,154 @@ describe('basic-querying-no-timeout', function () {
       });
     });
 
-    //TODO: missing tests - compare with `02.basic-querying.test.js`
+    it('should support "inq" filter that is satisfied', function (done) {
+      User.find({where: {seq: {inq: [0,1,2] }}}, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(3);
+        done();
+      });
+    });
+
+    it('should support "inq" filter that is not satisfied', function (done) {
+      User.find({where: {seq: {inq: [] }}}, function (err, users) {
+        should.not.exist(err);
+        users.should.have.lengthOf(0);
+        done();
+      });
+    });
+
+    it('should support "nin" filter that is satisfied', function (done) {
+      User.find({where: {seq: {nin: [0,1,2] }}}, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(3);
+        done();
+      });
+    });
+
+    it('should support "nin" filter that is not satisfied', function (done) {
+      User.find({where: {seq: {nin: [] }}}, function (err, users) {
+        should.not.exist(err);
+        users.should.have.lengthOf(6);
+        done();
+      });
+    });
+
+    it('should support "and" with "nin" operator that is satisfied', function (done) {
+      User.find({
+        where: {
+          and: [
+            {seq: {nin:[0,1,2] }},
+            {vip: true}
+          ]
+        }
+      }, function (err, users) {
+        should.not.exist(err);
+        users.should.have.property('length', 1);
+        done();
+      });
+    });
+
+    it('should support "between" filter that is satisfied', function (done) {
+      User.find({where: {order: {between: [3,6] }}}, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(4);
+        done();
+      });
+    });
+
+    it('should support "between" filter that is not satisfied', function (done) {
+      User.find({where: {order: {between: [3,1] }}}, function (err, users) {
+        should.not.exist(err);
+        users.should.have.lengthOf(6);
+        done();
+      });
+    });
+
+    it('should support "and" with "between" operator that is satisfied', function (done) {
+      User.find({
+        where: {
+          and: [
+            {order: {between:[2,6] }},
+            {vip: true}
+          ]
+        }
+      }, function (err, users) {
+        should.not.exist(err);
+        users.should.have.property('length', 2);
+        done();
+      });
+    });
+
+    it('should support "neq" filter that is satisfied', function (done) {
+      User.find({where: {name: {neq: 'John Lennon' }}}, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(5);
+        done();
+      });
+    });
+
+    it('should support "neq" filter that is satisfied with undefined property', function (done) {
+      User.find({where: {role: {neq: 'lead' }}}, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(4);
+        done();
+      });
+    });
+
+    it('should support "neq" filter that is not satisfied', function (done) {
+      User.find({where: {role: {neq: ''}}}, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(6);
+        done();
+      });
+    });
+
+    it('should support multiple comma separated property filter without "and" that is satisfied', function (done) {
+      User.find({where: {role: 'lead', vip: true}}, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(2);
+        done();
+      });
+    });
+
+    it('should support multiple comma separated "inq" without "and" filter that is satisfied', function (done) {
+      User.find(
+        {
+          where: {
+            role: {inq: ['lead']},
+            seq: {inq: [0,2,3,4,5]}
+          }
+        }, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(1);
+        done();
+      });
+    });
+
+    it('should support two "inq" and one "between" without "and" filter that is satisfied', function (done) {
+      User.find(
+        {
+          where: {
+            role: {inq: ['lead']},
+            order: {between: [1,6]},
+            seq: {inq:  [2,3,4,5]}
+          }
+        }, function (err, users) {
+        should.exist(users);
+        should.not.exist(err);
+        users.should.have.lengthOf(0);
+        done();
+      });
+    });
+
   });
 
   // TODO: there is no way for us to test the connector code explicitly
@@ -810,7 +1025,8 @@ describe('basic-querying-no-timeout', function () {
        sample('id').expect(['id']);
        sample(['id']).expect(['id']);
        sample(['email']).expect(['email']);*/
-    }, 2000);
+    });
+
   });
 
   describe('count', function () {
@@ -1144,8 +1360,97 @@ describe('basic-querying-no-timeout', function () {
           });
         });
       });
-    });
-  });
+
+    }); // end of `all > embedsMany relations`
+
+    describe('hasMany relations', function () {
+
+      beforeEach(function (done) {
+        User.destroyAll(function () {
+          Post.destroyAll(function () {
+            db.automigrate(['User'], done);
+          });
+        });
+      });
+
+      it('should create related model and check if include filter works', function (done) {
+        var Kamal = {
+          seq: 0,
+          name: 'Kamal Khatwani',
+          email: 'kamal@shoppinpal.com',
+          role: 'lead',
+          birthday: new Date('1993-12-08'),
+          order: 2,
+          vip: true
+        };
+
+        User.create(Kamal, function (err, kamal) {
+          should.not.exist(err);
+          should.exist(kamal.id);
+          should.exist(kamal.seq);
+          var kamals_post_1 = {
+            title: 'Kamal New Post',
+            content: 'First post of kamal khatwani on elasticsearch',
+            comments: ['First Comment']
+          };
+          kamal.posts.create(kamals_post_1, function (err, firstPost) {
+            should.not.exist(err);
+            should.exist(firstPost.id);
+            expect(firstPost.userId).to.equal(0);
+            User.find({include: 'posts'}, function (err, userFound) {
+              userFound = userFound[0].toJSON();
+              should.not.exist(err);
+              should.exist(userFound.posts);
+              expect(userFound.posts).to.be.instanceOf(Array);
+              expect(userFound.posts.length).to.equal(1);
+              done();
+            });
+          });
+        });
+      });
+
+      it('should create related model and check include filter with specific fields', function (done) {
+        var Kamal = {
+          seq: 0,
+          name: 'Kamal Khatwani',
+          email: 'kamal@shoppinpal.com',
+          role: 'lead',
+          birthday: new Date('1993-12-08'),
+          order: 2,
+          vip: true
+        };
+
+        User.create(Kamal, function (err, kamal) {
+          should.not.exist(err);
+          should.exist(kamal.id);
+          should.exist(kamal.seq);
+          var kamals_post_1 = {
+            title: 'Kamal New Post',
+            content: 'First post of kamal khatwani on elasticsearch',
+            comments: ['First Comment']
+          };
+          kamal.posts.create(kamals_post_1, function (err, firstPost) {
+            should.not.exist(err);
+            should.exist(firstPost.id);
+            expect(firstPost.userId).to.equal(0);
+            User.find({include: {relation: 'posts', scope: {fields: ['title']}}}, function (err, userFound) {
+              userFound = userFound[0].toJSON();
+              should.not.exist(err);
+              should.exist(userFound.posts);
+              expect(userFound.posts).to.be.instanceOf(Array);
+              expect(userFound.posts.length).to.equal(1);
+              expect(userFound.posts[0].title).to.equal('Kamal New Post');
+              expect(userFound.posts[0].content).to.equal(undefined);
+              expect(userFound.posts[0].comments).to.equal(undefined);
+              done();
+            });
+          });
+        });
+      });
+
+    }); // end of `all > hasMany relations`
+
+  }); // end of `all`
 
   describe('save', function () {
 
@@ -1270,28 +1575,6 @@ describe('basic-querying-no-timeout', function () {
 
     });
 
-    xdescribe('test id fallback when `generated:false`', function () {
-
-      it('should auto generate an id', function (done) {
-        Customer.create({name: 'George Harrison', vip: false}, function (err, u) {
-          console.log('user after create', u);
-          should.not.exist(err);
-          should.exist(u.id);
-          should.exist(u.objectId);
-          Customer.findById(u.objectId, function (err, u) {
-            console.log('customer after first findById', u);
-            u.save(function (err, savedCustomer) {
-              console.log('user after save', savedCustomer);
-              Customer.findById(u.objectId, function (err, foundUser) {
-                console.log('user after findById', foundUser);
-                done();
-              });
-            });
-          });
-        });
-      });
-    });
-
   });
 
   describe('updateAll', function () {
@@ -1319,6 +1602,28 @@ describe('basic-querying-no-timeout', function () {
       });
     })
 
+  });
+
+  xdescribe('test id fallback when `generated:false`', function () {
+
+    it('should auto generate an id', function (done) {
+      Customer.create({name: 'George Harrison', vip: false}, function (err, u) {
+        console.log('user after create', u);
+        should.not.exist(err);
+        should.exist(u.id);
+        should.exist(u.objectId);
+        Customer.findById(u.objectId, function (err, u) {
+          console.log('customer after first findById', u);
+          u.save(function (err, savedCustomer) {
+            console.log('user after save', savedCustomer);
+            Customer.findById(u.objectId, function (err, foundUser) {
+              console.log('user after findById', foundUser);
+              done();
+            });
+          });
+        });
+      });
+    });
   });
 
 });

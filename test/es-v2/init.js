@@ -26,11 +26,11 @@ global.getDataSource = global.getSchema = global.getConnector = function (custom
         ? console.log('\n\tcustomSettings will override global settings for datasource\n'/*, JSON.stringify(customSettings,null,2)*/)
         : console.log('\n\twill use global settings for datasource\n');
     var settings = customSettings || getSettings();
-    settings.log = {
-      type: 'file',
-      level: 'trace',
-      path: 'test/es-v2/elasticsearch-v2-'+Date.now()+'.log'
-    };
+    // settings.log = {
+    //   type: 'file',
+    //   level: 'trace',
+    //   path: 'test/es-v2/elasticsearch-v2-'+Date.now()+'.log'
+    // };
     //console.log('\n\tsettings:\n', JSON.stringify(settings,null,2));
     settings.connector =  require('../../');
     return new DataSource(settings);

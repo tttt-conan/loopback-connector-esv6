@@ -10,7 +10,7 @@
     }
   ],
   "apiVersion": "5.0",
-  "log": "trace",
+  "log": "error",
   "defaultSize": 50,
   "requestTimeout": 30000,
   "mappings": [
