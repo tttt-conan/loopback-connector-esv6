@@ -71,7 +71,7 @@ describe('basic-querying-no-timeout', function () {
         });
 
         PostWithId = db.define('PostWithId', {
-            id: {type: String, id: true}, // TODO: why is this line different from `02.basic-querying.test.js` ?
+            id: {type: String},
             title: {type: String, length: 255},
             content: {type: String}
         });
