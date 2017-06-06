@@ -1,3 +1,8 @@
+### v1.4.1 - Jun 6, 2017
+- Contributed by @AhsanAyaz
+  - Fixed Bug: when `and` was nested inside `or`, the ES query was built incorrectly (#93, #99 and #100)
+    - Many thanks to @aquid for jumping in multiple times and offering valuable advice during code reviews.
+
 ### v1.4.0 - Apr 23, 2017
 - contributed by @wolfgang-s
   - add support for ES 5.x (PR #87 and PR #89)
