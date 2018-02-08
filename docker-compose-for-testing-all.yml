@@ -20,3 +20,7 @@ services:
     image: elasticsearch:5
     ports:
      - "9203:9200"
+  es_v6:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.1
+    ports:
+     - "9204:9200"

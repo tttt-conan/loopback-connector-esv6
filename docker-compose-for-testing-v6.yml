@@ -1,0 +1,10 @@
+## Version Selection for compose file
+# https://docs.docker.com/compose/compose-file/#/versioning
+version: '2'
+services:
+  es_v6:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.1
+    ports:
+     - "9204:9200"
+    volumes:
+     - .:/apps

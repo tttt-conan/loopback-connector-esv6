@@ -358,6 +358,17 @@ To know more about `refresh` go through this [article](https://www.elastic.co/gu
                     1. `DEBUG=test:es-v5:* npm run testv5 -- --debug-brk`
                     1. `DEBUG=test:es-v5:*,loopback:connector:elasticsearch npm run testv5 -- --debug-brk`
             1. When you're finished and want to tear down the docker instances, run: `docker-compose -f docker-compose-for-testing-v5.yml down`
+        1. elasticsearch version 6.x
+            1. Run `docker-compose -f docker-compose-for-testing-v6.yml up`
+            1. Then run `npm run testv6`
+                1. To run tests with additional logging, use:
+                    1. `DEBUG=test:es-v6:* npm run testv6`
+                    1. `DEBUG=test:es-v6:*,loopback:connector:elasticsearch npm run testv6`
+                1. [Troubleshoot test with node-inspector](http://blog.andrewray.me/how-to-debug-mocha-tests-with-chrome/) if the level of details is still not enough:
+                    1. `npm run testv6 -- --debug-brk`
+                    1. `DEBUG=test:es-v6:* npm run testv6 -- --debug-brk`
+                    1. `DEBUG=test:es-v6:*,loopback:connector:elasticsearch npm run testv6 -- --debug-brk`
+            1. When you're finished and want to tear down the docker instances, run: `docker-compose -f docker-compose-for-testing-v6.yml down`
 
 ## Contributing
 
