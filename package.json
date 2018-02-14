@@ -1,7 +1,7 @@
 {
-  "name": "loopback-connector-es",
-  "version": "1.4.5",
-  "description": "Connect LoopBack to Elasticsearch engine",
+  "name": "loopback-connector-esv6",
+  "version": "1.0.0",
+  "description": "LoopBack Connector for Elasticsearch 6.x",
   "main": "index.js",
   "scripts": {
     "eslint": "eslint",
@@ -16,7 +16,9 @@
     "loopback",
     "elastic",
     "elasticsearch",
+    "elasticsearchv6",
     "es",
+    "esv6",
     "loopback-connector",
     "connector"
   ],
@@ -35,7 +37,11 @@
     },
     {
       "name": "wolfgang-s"
-    }
+    },
+    {
+      "name": "Bharath Reddy Kontham",
+      "email": "bharath2211@gmail.com"
+    },
   ],
   "readmeFilename": "README.md",
   "repository": {
