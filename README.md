@@ -64,15 +64,16 @@ npm install loopback-connector-esv6 --save --save-exact
 - **port:** Elasticsearch engine port.
 - **name:** Connector name.
 - **connector:** Elasticsearch driver.
-- **index:** Search engine specific index. (mandatory)
+- **index:** Search engine specific index. defaults to `shakespeare`. (mandatory)
 - **apiVersion:** specify the major version of the Elasticsearch nodes you will be connecting to.
 
-#### Important Note: 
-This package is created to support ElasticSearch v6.x only.
-
 ### Recommended:
-- **mappingType:** mapping type for provided index.
+- **mappingType:** mapping type for provided index. defaults to `basedata`
 - **mappingProperties:** An object with properties for above mentioned **mappingType**
+
+#### Important Note: 
+- This package is created to support ElasticSearch v6.x only.
+- `docType` property is automatically added in mapping properties which is required to differentiate documents stored in index with loopback model data. It stores loopback modelName value. `docType: { type: "keyword", index: true }`
 
 ### Optional:
 - **log:** sets elasticsearch client's logging, you can refer to the docs [here](https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/configuration.html#config-log)
