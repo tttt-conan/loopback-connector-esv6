@@ -1,7 +1,7 @@
 module.exports = {
   'db': {
     'name': 'elasticsearch-6',
-    'connector': 'es',
+    'connector': 'esv6',
     'index': 'shakespeare',
     'hosts': [{
       'host': 'localhost',
