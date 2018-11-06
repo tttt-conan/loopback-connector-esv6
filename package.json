@@ -1,15 +1,12 @@
 {
   "name": "loopback-connector-esv6",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "LoopBack Connector for Elasticsearch 6.x",
   "main": "index.js",
   "scripts": {
     "eslint": "eslint",
     "pretest": "eslint **/*.js",
     "test": "mocha --recursive",
-    "testv1": "mocha test/es-v1/**/*.js",
-    "testv2": "mocha test/es-v2/**/*.js",
-    "testv5": "mocha test/es-v5/**/*.js",
     "testv6": "mocha test/es-v6/**/*.js"
   },
   "keywords": [
@@ -57,13 +54,12 @@
   },
   "homepage": "https://github.com/strongloop-community/loopback-connector-elastic-search",
   "dependencies": {
-    "async": "^2.6.0",
-    "bluebird": "^2.9.14",
-    "debug": "^3.1.0",
-    "elastic-deletebyquery": "1.0.8",
-    "elasticsearch": "^14.0.0",
-    "lodash": "^4.17.4",
-    "loopback-connector": "^2.7.1"
+    "async": "2.6.1",
+    "bluebird": "2.11.0",
+    "debug": "3.2.6",
+    "elasticsearch": "15.2.0",
+    "lodash": "4.17.11",
+    "loopback-connector": "4.5.1"
   },
   "directories": {
     "example": "examples",
